@@ -20,12 +20,8 @@ pub fn hello() -> String {
     "hello".to_string()
 }
 
-pub fn run() {
-    _run()
-}
-
 #[tokio::main]
-async fn _run() {
+pub async fn run() {
     let client = Client::new("http://localhost:8086", "test");
     let out = Command::new("speedtest")
         .args(&["--json"])
@@ -33,8 +29,8 @@ async fn _run() {
         .expect("failed to start");
 
     let str = std::str::from_utf8(&out.stdout).unwrap();
-    let deserialized: Response = serde_json::from_str(str).unwrap();
-    println!("deserialized = {:?}", deserialized);
+    //let deserialized: Response = serde_json::from_str(str).unwrap();
+    //println!("deserialized = {:?}", deserialized);
 
     let resp = Response{
         download: 70087681.29487312,
@@ -43,7 +39,7 @@ async fn _run() {
         ping: 3.789,
     };
 
-    let write_result = client.query(&resp.into_query("status")).await;
+    //let write_result = client.query(&resp.into_query("status")).await;
 
     let read_query = Query::raw_read_query("select * from status");
     let read_result = client.query(&read_query).await;
